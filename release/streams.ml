@@ -44,5 +44,18 @@ let pi           () =
    4.*.(-1.**(float_of_int n))/.(float_of_int ((2*n)+1))+.cur in
    let rec parti n cur = Stream((part n cur), fun ()->parti (n+1) (part n cur)) in parti 0 0;;
 
-   
-let look_and_say () = failwith "Too late. Game over, pal!"
+ let revAdd lst v1 v2=
+  List.rev(v2::(v1::(List.rev lst)));;
+ 
+let look_and_say () = 
+   let rec speaking inp num acc cur=
+    match inp with
+    h::t-> if h=cur then speaking t (num+1) acc cur else
+    if num<>0 then speaking t 1 (revAdd acc num cur) h else
+      speaking t 1 acc h
+    |[]->if num <> 0 then Stream ((revAdd acc num cur), 
+      fun () -> speaking (revAdd acc num cur) 0 [] 0)
+      else Stream ([1], fun ()->speaking [1] 0 [] 0)
+    in speaking [] 0 [] 0;;
+
+
